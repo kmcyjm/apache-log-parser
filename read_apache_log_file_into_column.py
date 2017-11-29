@@ -39,12 +39,13 @@ args = parser.parse_args()
 apache_log_file = args.file
 
 with open(apache_log_file, 'r') as fr, open("apache_log_file_analysis.csv", 'w') as fw:
+
+    fieldnames = ['remote_host', 'remote_log_name', 'remote_user', 'time', 'url', 'status', 'bytes_sent']
+    writer = csv.DictWriter(fw, fieldnames=fieldnames)
+    writer.writeheader()
+
     for line in fr:
         fields = extract_fields(line)
-        fieldnames = fields.keys()
-        writer = csv.DictWriter(fw, fieldnames=fieldnames)
-
-        writer.writeheader()
         writer.writerow(fields)
 
 
